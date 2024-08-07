@@ -1,7 +1,6 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    //id("com.google.devtools.ksp")
     id("kotlin-kapt")
 }
 
@@ -57,10 +56,10 @@ dependencies {
     implementation ("com.squareup.okhttp3:okhttp:4.9.2")
 
 
-    val lifecycleVersion = "2.2.0"
+    val lifecycleVersion = "2.8.4"
 
     // ViewModel and LiveData
-    implementation ("androidx.lifecycle:lifecycle-extensions:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion")
     // optional - ReactiveStreams support for LiveData
     implementation ("androidx.lifecycle:lifecycle-reactivestreams-ktx:$lifecycleVersion")
