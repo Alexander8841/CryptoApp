@@ -32,11 +32,11 @@ android {
         viewBinding = true
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 
@@ -54,6 +54,7 @@ dependencies {
     implementation ("io.reactivex.rxjava2:rxjava:2.2.9")
     implementation ("com.squareup.retrofit2:adapter-rxjava2:2.7.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.7.0")
+    implementation ("com.squareup.okhttp3:okhttp:4.9.2")
 
 
     val lifecycleVersion = "2.2.0"
