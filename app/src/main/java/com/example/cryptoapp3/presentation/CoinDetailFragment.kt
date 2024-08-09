@@ -1,5 +1,6 @@
 package com.example.cryptoapp3.presentation
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,13 +9,25 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.cryptoapp3.databinding.FragmentCoinDetailBinding
 import com.squareup.picasso.Picasso
+import javax.inject.Inject
 
 class CoinDetailFragment : Fragment() {
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
     private lateinit var fromSymbol: String
     private lateinit var viewModel: CoinViewModel
     private var _binding: FragmentCoinDetailBinding? = null
     private val binding: FragmentCoinDetailBinding
         get() = _binding ?: throw RuntimeException("FragmentCoinDetailBinding == null")
+
+    private val component by lazy {
+        (requireActivity().application as CoinApp).component
+    }
+
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +45,7 @@ class CoinDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[CoinViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[CoinViewModel::class.java]
         with(binding) {
             viewModel.getDetailInfo(fromSymbol).observe(viewLifecycleOwner) {
                 tvPrice.text = it.price

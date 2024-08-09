@@ -73,4 +73,9 @@ dependencies {
     implementation ("androidx.room:room-ktx:$roomVersion")
 
     implementation ("com.squareup.picasso:picasso:2.71828")
+
+    //dagger
+    implementation ("com.google.dagger:dagger:2.51")
+    kapt ("com.google.dagger:dagger-compiler:2.51")
+
 }

@@ -4,17 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.example.cryptoapp3.data.database.CoinInfoDbModel
 import com.example.cryptoapp3.data.network.model.CoinInfoDto
-import com.example.cryptoapp3.domain.pojo.CoinInfo
 import com.example.cryptoapp3.data.network.model.CoinInfoJsonContainerDto
 import com.example.cryptoapp3.data.network.model.CoinNamesListDto
+import com.example.cryptoapp3.domain.pojo.CoinInfo
 import com.google.gson.Gson
 import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+import javax.inject.Inject
 
-class Mapper {
+class Mapper @Inject constructor() {
     fun mapJsonContainerToListCoinInfo(jsonContainer: CoinInfoJsonContainerDto): List<CoinInfoDto> {
         val result = mutableListOf<CoinInfoDto>()
         val jsonObject = jsonContainer.jsonObject ?: return result
@@ -38,7 +39,7 @@ class Mapper {
             CoinInfoDbModel(
                 it.fromSymbol,
                 it.toSymbol,
-                it.price,
+                it.price?.toDouble() ?: 0.0,
                 it.lastUpdate,
                 it.highDay,
                 it.lowDay,
@@ -47,13 +48,13 @@ class Mapper {
             )
         }
 
-    fun mapListDbModelToListEntity(coinInfoDbModel: LiveData<List<CoinInfoDbModel>>) =
-        coinInfoDbModel.map { it ->
+    fun mapListDbModelToListEntity(coinInfoDbModelList: LiveData<List<CoinInfoDbModel>>) =
+        coinInfoDbModelList.map { it ->
             it.map {
                 CoinInfo(
                     it.fromSymbol,
                     it.toSymbol,
-                    it.price,
+                    String.format("%.8f", it.price),
                     convertTimestampToTime(it.lastUpdate),
                     it.highDay,
                     it.lowDay,
@@ -63,12 +64,12 @@ class Mapper {
             }
         }
 
-    fun mapDbModelToEntity(coinPriceInfoDtoList: LiveData<CoinInfoDbModel>) =
-        coinPriceInfoDtoList.map {
+    fun mapDbModelToEntity(coinInfoDbModel: LiveData<CoinInfoDbModel>) =
+        coinInfoDbModel.map {
             CoinInfo(
                 it.fromSymbol,
                 it.toSymbol,
-                it.price,
+                String.format("%.8f", it.price),
                 convertTimestampToTime(it.lastUpdate),
                 it.highDay,
                 it.lowDay,
