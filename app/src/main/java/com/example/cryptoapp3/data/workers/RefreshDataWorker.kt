@@ -10,19 +10,21 @@ import androidx.work.WorkerParameters
 import com.example.cryptoapp3.data.CoinRepositoryImpl
 import com.example.cryptoapp3.data.Mapper
 import com.example.cryptoapp3.data.database.AppDatabase
+import com.example.cryptoapp3.data.database.CoinInfoDao
 import com.example.cryptoapp3.data.network.api.ApiFactory
+import com.example.cryptoapp3.data.network.api.ApiService
 import kotlinx.coroutines.delay
 import java.lang.Exception
 import java.lang.RuntimeException
+import javax.inject.Inject
 
-class RefreshDataWorker(
+class RefreshDataWorker @Inject constructor(
     context: Context,
-    workerParams: WorkerParameters
+    workerParams: WorkerParameters,
+    private val coinInfoDao: CoinInfoDao,
+    private val mapper: Mapper,
+    private val apiService: ApiService
 ): CoroutineWorker(context, workerParams) {
-
-    private val coinInfoDao = AppDatabase.getInstance(context).coinInfoDao()
-    private val mapper = Mapper()
-    private val apiService = ApiFactory.apiService
 
     companion object {
         private const val UPDATE_PERIOD = 5000L
